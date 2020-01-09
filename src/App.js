@@ -12,12 +12,12 @@ class App extends Component {
       {
         id: uuid.v4(),
         title: 'Take out trash',
-        completed: true, 
+        completed: false, 
       },
       {
         id: uuid.v4(),
         title: 'Complete the Todo list',
-        completed: true, 
+        completed: false, 
       }, 
       {
         id: uuid.v4(),
