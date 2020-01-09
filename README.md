@@ -1,4 +1,4 @@
-# TodoList using react. 
+# Todo List using React. 
 
 ## Features
 - **Add Items to the List**
