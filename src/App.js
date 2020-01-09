@@ -6,26 +6,31 @@ import uuid from 'uuid';
 
 import './App.css';
 
+
+
+
 class App extends Component {
   state = {
-    todos: [
-      {
-        id: uuid.v4(),
-        title: 'Take out trash',
-        completed: false, 
-      },
-      {
-        id: uuid.v4(),
-        title: 'Complete the Todo list',
-        completed: false, 
-      }, 
-      {
-        id: uuid.v4(),
-        title: 'Show it to mentor',
-        completed: false, 
-      }
-    ]
+    todos: JSON.parse(localStorage.getItem('todos')) || [],
+    newItem: ''
   }
+
+   setLocalStorage = () => {
+    localStorage.setItem('todos', JSON.stringify(this.state.todos));
+    this.setState({newItem: ''});
+  }
+
+  onChange = (event) => {
+    this.setState({newItem: event.target.value });
+  
+  }
+  onSubmit = (event) => {
+    event.preventDefault();
+    this.addToDo();
+    
+    
+  }
+
 
   markComplete = (id) => {
     this.setState({ todos: this.state.todos.map(todo => {
@@ -33,20 +38,22 @@ class App extends Component {
         todo.completed = !todo.completed;
       }
       return todo;
-    }) })
+    }) }, this.setLocalStorage);
   }
   
   delTodo = (id) => {
     console.log(id);
-    this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] });
+    this.setState({ todos: [...this.state.todos.filter(todo => todo.id !== id)] }, this.setLocalStorage);
   }
-  addToDo = (title) => {
+
+  addToDo = () => {
+    console.log('add', this.state.newItem);
     const newTodo = {
       id: uuid.v4(), 
-      title,
+      title: this.state.newItem,
       completed: false
     }
-    this.setState({ todos: [...this.state.todos, newTodo]});
+    this.setState({ todos: [...this.state.todos, newTodo]}, this.setLocalStorage);
   }
 
   render() {
@@ -54,7 +61,7 @@ class App extends Component {
       <div className="App">
         <div className="container">
         <Header />
-        <AddToDo addToDo={this.addToDo}/>
+        <AddToDo addToDo={this.addToDo} newItem={this.state.newItem} onChange={this.onChange} onSubmit={this.onSubmit}/>
         <Todos todos={this.state.todos} markComplete={this.markComplete} delTodo={this.delTodo}/>
         </div>
         
